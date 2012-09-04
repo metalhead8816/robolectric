@@ -23,9 +23,6 @@ public class ShadowParcel {
 
     @Implementation
     public void writeString(String str) {
-        if (str == null) {
-            return;
-        }
         parcelData.add(str);
     }
 

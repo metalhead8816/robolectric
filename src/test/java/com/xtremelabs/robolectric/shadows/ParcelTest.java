@@ -65,8 +65,8 @@ public class ParcelTest {
 	public void testWriteNullString() {
 		parcel.writeString( null );
 		assertThat( parcel.readString(), nullValue() );
-		assertThat( shadowParcel.getIndex(), equalTo( 0 ) );
-		assertThat( shadowParcel.getParcelData().size(), equalTo( 0 ) );
+		assertThat( shadowParcel.getIndex(), equalTo( 1 ) );
+		assertThat( shadowParcel.getParcelData().size(), equalTo( 1 ) );
 	}
 
 	@Test

@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -283,6 +284,14 @@ public class ParcelTest {
     }
 
     @Test
+    public void testWriteCreateNullStringArray() {
+      final String[] strings = null;
+      parcel.writeStringArray(strings);
+      final String[] strings2 = parcel.createStringArray();
+      assertNull(strings2);
+    }
+
+    @Test
     public void testReadWriteStringList() {
       final List<String> strings = Arrays.asList( "foo", "bar" );
       parcel.writeStringList(strings);
@@ -297,6 +306,14 @@ public class ParcelTest {
       parcel.writeStringList(strings);
       List<String> extractedStrings = parcel.createStringArrayList();
       assertEquals(strings, extractedStrings);
+    }
+
+    @Test
+    public void testWriteCreateNullStringArrayList() {
+      final List<String> strings = null;
+      parcel.writeStringList(strings);
+      List<String> extractedStrings = parcel.createStringArrayList();
+      assertNull(extractedStrings);
     }
 
     @Test
@@ -335,11 +352,27 @@ public class ParcelTest {
     }
 
     @Test
+    public void testWriteCreateNullBooleanArray() {
+        final boolean[] booleans = null;
+        parcel.writeBooleanArray(booleans);
+        final boolean[] booleans2 = parcel.createBooleanArray();
+        assertNull(booleans2);
+    }
+
+    @Test
     public void testWriteCreateByteArray() {
         final byte[] bytes = {1, 2};
         parcel.writeByteArray(bytes);
         final byte[] bytes2 = parcel.createByteArray();
         assertTrue(Arrays.equals(bytes, bytes2));
+    }
+
+    @Test
+    public void testWriteCreateNullByteArray() {
+        final byte[] bytes = null;
+        parcel.writeByteArray(bytes);
+        final byte[] bytes2 = parcel.createByteArray();
+        assertNull(bytes2);
     }
 
     @Test
@@ -351,11 +384,27 @@ public class ParcelTest {
     }
 
     @Test
+    public void testWriteCreateNullCharArray() {
+        final char[] chars = null;
+        parcel.writeCharArray(chars);
+        final char[] chars2 = parcel.createCharArray();
+        assertNull(chars2);
+    }
+
+    @Test
     public void testWriteCreateIntArray() {
         final int[] ints = {1, 2};
         parcel.writeIntArray(ints);
         final int[] ints2 = parcel.createIntArray();
         assertTrue(Arrays.equals(ints, ints2));
+    }
+
+    @Test
+    public void testWriteCreateNullIntArray() {
+        final int[] ints = null;
+        parcel.writeIntArray(ints);
+        final int[] ints2 = parcel.createIntArray();
+        assertNull(ints2);
     }
 
     @Test
@@ -367,6 +416,14 @@ public class ParcelTest {
     }
 
     @Test
+    public void testWriteCreateNullLongArray() {
+        final long[] longs = null;
+        parcel.writeLongArray(longs);
+        final long[] longs2 = parcel.createLongArray();
+        assertNull(longs2);
+    }
+
+    @Test
     public void testWriteCreateFloatArray() {
         final float[] floats = {1.5f, 2.25f};
         parcel.writeFloatArray(floats);
@@ -375,10 +432,26 @@ public class ParcelTest {
     }
 
     @Test
+    public void testWriteCreateNullFloatArray() {
+        final float[] floats = null;
+        parcel.writeFloatArray(floats);
+        final float[] floats2 = parcel.createFloatArray();
+        assertNull(floats2);
+    }
+
+    @Test
     public void testWriteCreateDoubleArray() {
         final double[] doubles = {1.2, 2.2};
         parcel.writeDoubleArray(doubles);
         final double[] doubles2 = parcel.createDoubleArray();
         assertTrue(Arrays.equals(doubles, doubles2));
+    }
+
+    @Test
+    public void testWriteCreateNullDoubleArray() {
+        final double[] doubles = null;
+        parcel.writeDoubleArray(doubles);
+        final double[] doubles2 = parcel.createDoubleArray();
+        assertNull(doubles2);
     }
 }

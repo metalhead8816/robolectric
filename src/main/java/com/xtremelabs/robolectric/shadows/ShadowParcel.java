@@ -138,8 +138,8 @@ public class ShadowParcel {
     @Implementation
     public void writeBooleanArray(boolean[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (boolean b : val) writeBoolean(b);
@@ -149,7 +149,7 @@ public class ShadowParcel {
     public boolean[] createBooleanArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         boolean[] val = new boolean[n];
         for (int i = 0; i < val.length; i++) {
@@ -170,8 +170,8 @@ public class ShadowParcel {
     @Implementation
     public void writeCharArray(char[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (char b : val) writeChar(b);
@@ -181,7 +181,7 @@ public class ShadowParcel {
     public char[] createCharArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         char[] val = new char[n];
         for (int i = 0; i < val.length; i++) {
@@ -202,8 +202,8 @@ public class ShadowParcel {
     @Implementation
     public void writeFloatArray(float[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (float f : val) writeFloat(f);
@@ -213,7 +213,7 @@ public class ShadowParcel {
     public float[] createFloatArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         float[] val = new float[n];
         for (int i = 0; i < val.length; i++) {
@@ -225,8 +225,8 @@ public class ShadowParcel {
     @Implementation
     public void writeDoubleArray(double[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (double f : val) writeDouble(f);
@@ -245,7 +245,7 @@ public class ShadowParcel {
     public double[] createDoubleArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         double[] val = new double[n];
         for (int i = 0; i < val.length; i++) {
@@ -257,8 +257,8 @@ public class ShadowParcel {
     @Implementation
     public void writeIntArray(int[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (int f : val) writeInt(f);
@@ -277,7 +277,7 @@ public class ShadowParcel {
     public int[] createIntArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         int[] val = new int[n];
         for (int i = 0; i < val.length; i++) {
@@ -289,8 +289,8 @@ public class ShadowParcel {
     @Implementation
     public void writeByteArray(byte[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (byte f : val) writeByte(f);
@@ -309,7 +309,7 @@ public class ShadowParcel {
     public byte[] createByteArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         byte[] val = new byte[n];
         for (int i = 0; i < val.length; i++) {
@@ -321,8 +321,8 @@ public class ShadowParcel {
     @Implementation
     public void writeLongArray(long[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (long f : val) writeLong(f);
@@ -341,7 +341,7 @@ public class ShadowParcel {
     public long[] createLongArray() {
         int n = readInt();
         if (n == -1) {
-          return null;
+            return null;
         }
         long[] val = new long[n];
         for (int i = 0; i < val.length; i++) {
@@ -353,8 +353,8 @@ public class ShadowParcel {
     @Implementation
     public void writeStringArray(String[] val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         writeInt(val.length);
         for (String f : val) writeString(f);
@@ -386,8 +386,8 @@ public class ShadowParcel {
     @Implementation
     public void writeStringList(List<String> val) {
         if (val == null) {
-          writeInt(-1);
-          return;
+            writeInt(-1);
+            return;
         }
         int N = val.size();
         writeInt(N);

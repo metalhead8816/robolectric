@@ -2,6 +2,8 @@ package com.xtremelabs.robolectric.shadows;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.os.Parcel;
+
 import com.xtremelabs.robolectric.internal.Implementation;
 import com.xtremelabs.robolectric.internal.Implements;
 
@@ -44,6 +46,32 @@ public class ShadowComponentName {
     @Implementation
     public String getClassName() {
         return cls;
+    }
+
+    @Implementation
+    public static ComponentName readFromParcel(Parcel in) {
+        if (in.readInt() == 0) {
+            return null;
+        }
+        String pkg = in.readString();
+        String cls = in.readString();
+        return new ComponentName(pkg, cls);
+    }
+
+    @Implementation
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(1);
+        out.writeString(pkg);
+        out.writeString(cls);
+    }
+
+    @Implementation
+    public static void writeToParcel(ComponentName c, Parcel out) {
+        if (c == null) {
+            out.writeInt(0);
+        } else {
+            c.writeToParcel(out, 0);
+        }
     }
 
     @Override @Implementation

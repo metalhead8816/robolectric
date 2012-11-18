@@ -187,8 +187,7 @@ public class ShadowBundle {
     @Implementation
     public ArrayList<Parcelable> getParcelableArrayList(String key) {
         Object value = map.get(key);
-        return value == null || !(value instanceof ArrayList) ? null
-                : (ArrayList<Parcelable>) value;
+        return value == null || !(value instanceof ArrayList) ? null : (ArrayList<Parcelable>) value;
     }
 
     @Implementation
@@ -221,8 +220,7 @@ public class ShadowBundle {
     @Implementation
     public ArrayList<CharSequence> getCharSequenceArrayList(String key) {
         Object value = map.get(key);
-        return value == null || !(value instanceof ArrayList) ? null
-                : (ArrayList<CharSequence>) value;
+        return value == null || !(value instanceof ArrayList) ? null : (ArrayList<CharSequence>) value;
     }
 
     @Implementation

@@ -202,7 +202,7 @@ public class ShadowIntent {
 
     @Implementation
     public Bundle getExtras() {
-        return extras != null ? new Bundle(extras) : null;
+        return extras.isEmpty() ? null : new Bundle(extras);
     }
 
     @Implementation

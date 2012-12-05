@@ -54,6 +54,9 @@ public final class R {
         public static final int fragment = nextId++;
         public static final int dynamic_fragment_container = nextId++;
         public static final int content_view = nextId++;
+        
+        public static final int showLeftButton = nextId++;
+        public static final int showRightButton = nextId++;
     }
 
     public static final class string {
@@ -145,6 +148,10 @@ public final class R {
         public static final int[] HeaderBar = {id.textStyle2, id.textStyle3};
         public static final int HeaderBar_textStyle2 = 0;
         public static final int HeaderBar_textStyle3 = 1;
+        
+        public static final int[] ButtonBar = {id.showLeftButton, id.showRightButton};
+        public static final int ButtonBar_showLeftButton = 0;
+        public static final int ButonBar_showRightButton = 1;
     }
 
     public static final class dimen {

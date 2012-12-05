@@ -1,15 +1,6 @@
 package com.xtremelabs.robolectric.shadows;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
-import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.internal.Implementation;
-import com.xtremelabs.robolectric.internal.Implements;
-import com.xtremelabs.robolectric.internal.RealObject;
-import com.xtremelabs.robolectric.res.ResourceLoader;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import android.app.Application;
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+
+import com.xtremelabs.robolectric.internal.Implementation;
+import com.xtremelabs.robolectric.internal.Implements;
+import com.xtremelabs.robolectric.internal.RealObject;
+import com.xtremelabs.robolectric.res.ResourceLoader;
 
 /**
  * Calls through to the {@code resourceLoader} to actually load resources.
@@ -73,20 +73,7 @@ abstract public class ShadowContext {
 
     @Implementation
     public final TypedArray obtainStyledAttributes(AttributeSet set, int[] attrs) {
-        TypedArray result = Robolectric.newInstanceOf(TypedArray.class);
-        if (attrs == null) {
-            return result;
-        }
-        
-        if( set == null ){
-        	return getTheme().obtainStyledAttributes( attrs );
-        }
-        
-        ShadowTypedArray styledAttributes = Robolectric.shadowOf(result);
-        for(int attr : attrs) {
-            styledAttributes.add(set.getAttributeValue(attr));
-        }
-        return result;
+        return obtainStyledAttributes(set, attrs, 0, 0);
     }
 
     @Implementation

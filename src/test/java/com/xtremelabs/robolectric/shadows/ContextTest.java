@@ -1,17 +1,15 @@
 package com.xtremelabs.robolectric.shadows;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.TypedArray;
-import com.xtremelabs.robolectric.R;
-import com.xtremelabs.robolectric.WithTestDefaultsRunner;
-import com.xtremelabs.robolectric.tester.android.util.TestAttributeSet;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.core.IsEqual;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,12 +19,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.TypedArray;
+
+import com.xtremelabs.robolectric.R;
+import com.xtremelabs.robolectric.WithTestDefaultsRunner;
+import com.xtremelabs.robolectric.tester.android.util.TestAttributeSet;
 
 @RunWith(WithTestDefaultsRunner.class)
 public class ContextTest {
@@ -262,7 +267,7 @@ public class ContextTest {
     }
 
     @Test
-    public void obtainStyledAttributes_shouldExtractAttributesFromAttributeSet() throws Exception {
+    public void obtainStyledAttributes_shouldExtractStringAttributesFromAttributeSet() throws Exception {
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put("ns:textStyle2", "one");
         attributes.put("ns:textStyle3", "two");
@@ -271,5 +276,25 @@ public class ContextTest {
 
         assertThat(typedArray.getString(R.styleable.HeaderBar_textStyle2), equalTo("one"));
         assertThat(typedArray.getString(R.styleable.HeaderBar_textStyle3), equalTo("two"));
+    }
+    
+    @Test
+    public void obtainStyledAttributes_shouldExtractBooleanAttributesFromAttributeSet() throws Exception {
+        Map<String, String> attributes = new HashMap<String, String>();
+        attributes.put("ns:showRightButton", "true");
+        attributes.put("ns:showLeftButton", "false");
+        TestAttributeSet testAttributeSet = new TestAttributeSet(attributes, R.class);
+        TypedArray typedArray = context.obtainStyledAttributes(testAttributeSet, R.styleable.ButtonBar);
+
+        assertThat(typedArray.getBoolean(R.styleable.ButonBar_showRightButton, false), equalTo(true));
+        assertThat(typedArray.getBoolean(R.styleable.ButtonBar_showLeftButton, true), equalTo(false));
+    }
+    
+    @Test
+    public void obtainStyledAttributes_shouldUseDefaultValuesIfAttributesNotFound() throws Exception {
+        TypedArray typedArray = context.obtainStyledAttributes(null, R.styleable.ButtonBar);
+
+        assertThat(typedArray.getBoolean(R.styleable.ButonBar_showRightButton, false), equalTo(false));
+        assertThat(typedArray.getBoolean(R.styleable.ButtonBar_showLeftButton, true), equalTo(true));
     }
 }

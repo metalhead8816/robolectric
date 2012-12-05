@@ -138,7 +138,14 @@ public class TestAttributeSet implements AttributeSet {
 
     @Override
     public boolean getAttributeBooleanValue(int resourceId, boolean defaultValue) {
-        throw new UnsupportedOperationException();
+        String qualifiedResourceName = resourceExtractor.getResourceName(resourceId);
+        if (qualifiedResourceName != null) {
+            String resourceName = qualifiedResourceName.substring(qualifiedResourceName.indexOf('/') + 1);
+            String value = getAttributeValueInMap(null, resourceName);
+            return (value != null) ? Boolean.valueOf(value) : defaultValue;
+        } else {
+            return defaultValue;
+        }
     }
 
     @Override
@@ -159,8 +166,15 @@ public class TestAttributeSet implements AttributeSet {
     }
 
     @Override
-    public int getAttributeIntValue(int index, int defaultValue) {
-        throw new UnsupportedOperationException();
+    public int getAttributeIntValue(int resourceId, int defaultValue) {
+        String qualifiedResourceName = resourceExtractor.getResourceName(resourceId);
+        if (qualifiedResourceName != null) {
+            String resourceName = qualifiedResourceName.substring(qualifiedResourceName.indexOf('/') + 1);
+            String value = getAttributeValueInMap(null, resourceName);
+            return (value != null) ? Integer.valueOf(value) : defaultValue;
+        } else {
+            return defaultValue;
+        }
     }
 
     @Override
@@ -169,8 +183,15 @@ public class TestAttributeSet implements AttributeSet {
     }
 
     @Override
-    public float getAttributeFloatValue(int index, float defaultValue) {
-        throw new UnsupportedOperationException();
+    public float getAttributeFloatValue(int resourceId, float defaultValue) {
+        String qualifiedResourceName = resourceExtractor.getResourceName(resourceId);
+        if (qualifiedResourceName != null) {
+            String resourceName = qualifiedResourceName.substring(qualifiedResourceName.indexOf('/') + 1);
+            String value = getAttributeValueInMap(null, resourceName);
+            return (value != null) ? Float.valueOf(value) : defaultValue;
+        } else {
+            return defaultValue;
+        }
     }
 
     @Override

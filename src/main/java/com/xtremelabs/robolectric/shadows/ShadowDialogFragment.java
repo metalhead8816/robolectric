@@ -36,17 +36,13 @@ public class ShadowDialogFragment extends ShadowFragment {
         TestFragmentManager testFragmentManager = (TestFragmentManager) manager;
         FragmentActivity activityFromManager = testFragmentManager.getActivity();
 
-        shadowOf(realDialogFragment).setActivity(activityFromManager);
-
-        realDialogFragment.onAttach(activity);
-        realDialogFragment.onCreate(null);
+        testFragmentManager.addFragment(0, tag, realDialogFragment, false);
         dialog = realDialogFragment.onCreateDialog(null);
         view = realDialogFragment.onCreateView(ShadowLayoutInflater.from(activity), null, null);
         if (dialog == null) {
             dialog = new Dialog(activityFromManager);
             dialog.setContentView(view);
         }
-        testFragmentManager.addDialogFragment(tag, realDialogFragment);
         realDialogFragment.onViewCreated(view, null);
         realDialogFragment.onActivityCreated(null);
         realDialogFragment.onStart();

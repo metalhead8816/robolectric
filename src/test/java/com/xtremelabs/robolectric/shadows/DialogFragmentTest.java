@@ -36,7 +36,8 @@ public class DialogFragmentTest {
 
     @Test
     public void show_shouldCallLifecycleMethods() throws Exception {
-        dialogFragment.show(fragmentManager, "this is a tag");
+        String tag = "this is a tag";
+        dialogFragment.show(fragmentManager, tag);
 
         dialogFragment.transcript.assertEventsSoFar(
                 "onAttach",
@@ -49,7 +50,10 @@ public class DialogFragmentTest {
                 "onResume"
         );
 
-        assertNotNull(dialogFragment.getActivity());
+        assertEquals(0, shadowOf(dialogFragment).getContainerViewId());
+        assertFalse(shadowOf(dialogFragment).getShouldReplace());
+        assertEquals(tag, dialogFragment.getTag());
+        assertSame(activity, dialogFragment.getActivity());
         assertSame(activity, dialogFragment.onAttachActivity);
     }
 

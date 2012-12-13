@@ -16,6 +16,8 @@ import com.xtremelabs.robolectric.WithTestDefaultsRunner;
 import com.xtremelabs.robolectric.tester.android.util.TestFragmentManager;
 import com.xtremelabs.robolectric.util.Scheduler;
 import com.xtremelabs.robolectric.util.TestRunnable;
+import com.xtremelabs.robolectric.util.Transcript;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,6 +68,10 @@ public class FragmentManagerTest {
                 "onAttach",
                 "onCreate"
         );
+        activity.transcript.assertEventsSoFar(
+                "onCreate",
+                "onAttachFragment"
+        );
 
         assertSame(activity, fragment.onAttachActivity);
         assertSame(activity, fragment.getActivity());
@@ -74,6 +80,7 @@ public class FragmentManagerTest {
     @Test
     public void startFragment_shouldCallLifecycleMethods() throws Exception {
         manager.addFragment(View.NO_ID, null, fragment, false);
+
         fragment.transcript.clear();
         manager.startFragment(fragment);
 
@@ -82,6 +89,10 @@ public class FragmentManagerTest {
                 "onViewCreated",
                 "onActivityCreated",
                 "onStart"
+        );
+        activity.transcript.assertEventsSoFar(
+                "onCreate",
+                "onAttachFragment"
         );
 
         assertEquals(fragment.onCreateViewInflater, activity.getLayoutInflater());
@@ -237,12 +248,21 @@ public class FragmentManagerTest {
     }
 
     private static class TestFragmentActivity extends FragmentActivity {
+        Transcript transcript = new Transcript();
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             View view = new FrameLayout(this);
             view.setId(CONTAINER_VIEW_ID);
             setContentView(view);
+            transcript.add("onCreate");
+        }
+
+        @Override
+        public void onAttachFragment(Fragment fragment) {
+            super.onAttachFragment(fragment);
+            transcript.add("onAttachFragment");
         }
     }
 

@@ -133,10 +133,6 @@ public class TestFragmentManager extends FragmentManager {
     public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
     }
 
-    public void addDialogFragment(String tag, DialogFragment fragment) {
-        fragmentsByTag.put(tag, fragment);
-    }
-
     public void addFragment(int containerViewId, String tag, Fragment fragment, boolean replace) {
         fragmentsById.put(containerViewId, fragment);
         fragmentsByTag.put(tag, fragment);
@@ -148,6 +144,7 @@ public class TestFragmentManager extends FragmentManager {
         shadowFragment.setActivity(activity);
 
         fragment.onAttach(activity);
+        activity.onAttachFragment(fragment);
         fragment.onCreate(shadowFragment.getSavedInstanceState());
     }
 

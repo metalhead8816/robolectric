@@ -158,6 +158,7 @@ public class Robolectric {
                 ShadowAssetManager.class,
                 ShadowAsyncTask.class,
                 ShadowAudioManager.class,
+                ShadowAutoCompleteTextView.class,
                 ShadowBase64.class,
                 ShadowBaseAdapter.class,
                 ShadowBase64.class,
@@ -521,6 +522,10 @@ public class Robolectric {
     public static ShadowAudioManager shadowOf(AudioManager instance) {
         return (ShadowAudioManager) shadowOf_(instance);
     }
+
+    public static ShadowAutoCompleteTextView shadowOf(AutoCompleteTextView instance) {
+      return (ShadowAutoCompleteTextView) shadowOf_(instance);
+  }
 
     public static ShadowBaseAdapter shadowOf(BaseAdapter other) {
         return (ShadowBaseAdapter) Robolectric.shadowOf_(other);

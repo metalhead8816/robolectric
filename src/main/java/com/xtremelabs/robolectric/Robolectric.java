@@ -1,7 +1,11 @@
 package com.xtremelabs.robolectric;
 
 import android.accounts.AccountManager;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.app.*;
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -141,11 +145,14 @@ public class Robolectric {
                 ShadowAlphaAnimation.class,
                 ShadowAndroidHttpClient.class,
                 ShadowAnimation.class,
-                ShadowAnimator.class,
                 ShadowAnimationDrawable.class,
                 ShadowAnimationSet.class,
                 ShadowAnimationUtils.class,
+                ShadowAnimator.class,
+                ShadowAnimatorSet.class,
                 ShadowApplication.class,
+                ShadowAppWidgetHost.class,
+                ShadowAppWidgetHostView.class,
                 ShadowAppWidgetManager.class,
                 ShadowArrayAdapter.class,
                 ShadowAssetManager.class,
@@ -474,8 +481,24 @@ public class Robolectric {
         return (ShadowAnimationUtils) shadowOf_(instance);
     }
 
+    public static ShadowAnimator shadowOf(Animator instance) {
+        return (ShadowAnimator) shadowOf_(instance);
+    }
+
+    public static ShadowAnimatorSet shadowOf(AnimatorSet instance) {
+        return (ShadowAnimatorSet) shadowOf_(instance);
+    }
+
     public static ShadowApplication shadowOf(Application instance) {
         return (ShadowApplication) shadowOf_(instance);
+    }
+
+    public static ShadowAppWidgetHost shadowOf(AppWidgetHost instance) {
+        return (ShadowAppWidgetHost) shadowOf_(instance);
+    }
+
+    public static ShadowAppWidgetHostView shadowOf(AppWidgetHostView instance) {
+        return (ShadowAppWidgetHostView) shadowOf_(instance);
     }
 
     public static ShadowAppWidgetManager shadowOf(AppWidgetManager instance) {
@@ -794,7 +817,7 @@ public class Robolectric {
     public static ShadowMergeCursor shadowOf(MergeCursor instance) {
         return (ShadowMergeCursor) shadowOf_(instance);
     }
-    
+
     public static ShadowMessage shadowOf(Message instance) {
         return (ShadowMessage) shadowOf_(instance);
     }
@@ -1023,7 +1046,7 @@ public class Robolectric {
     public static ShadowTouchDelegate shadowOf( TouchDelegate instance ){
     	return (ShadowTouchDelegate) shadowOf_(instance);
     }
-    
+
     public static ShadowTranslateAnimation shadowOf(TranslateAnimation instance) {
         return (ShadowTranslateAnimation) shadowOf_(instance);
     }
@@ -1298,6 +1321,10 @@ public class Robolectric {
         ShadowLooper.idleMainLooper(interval);
     }
 
+    public static void idleMainLooperConstantly(boolean shouldIdleConstantly) {
+        ShadowLooper.idleMainLooperConstantly(shouldIdleConstantly);
+    }
+
     public static Scheduler getUiThreadScheduler() {
         return shadowOf(Looper.getMainLooper()).getScheduler();
     }
@@ -1395,12 +1422,12 @@ public class Robolectric {
                 setFinalStaticField(field, newValue);
             } catch (NoSuchFieldException e) {
                 throw new RuntimeException(e);
-            } 
+            }
         }
 
         public static Object setFinalStaticField(Field field, Object newValue) {
         	Object oldValue = null;
-        	
+
             try {
             	field.setAccessible(true);
 
@@ -1415,7 +1442,7 @@ public class Robolectric {
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            
+
             return oldValue;
         }
     }

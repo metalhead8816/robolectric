@@ -86,11 +86,16 @@ public class ShadowTextView extends ShadowView {
         boolean isSelectStartAtEnd = selectionStart == this.text.length();
         boolean isSelectEndAtEnd = selectionEnd == this.text.length();
         CharSequence oldValue = this.text;
-        StringBuffer sb = new StringBuffer(this.text);
-        sb.append(text);
-
-        sendBeforeTextChanged(sb.toString());
-        this.text = sb.toString();
+        if (!(this.text instanceof Editable)) {
+          StringBuffer sb = new StringBuffer(this.text);
+          sb.append(text);
+          CharSequence newText = sb.toString();
+          sendBeforeTextChanged(newText);
+          this.text = newText;
+        } else {
+          ((Editable) this.text).append(text);
+          sendBeforeTextChanged(text);
+        }
 
         if (isSelectStartAtEnd) {
             selectionStart = this.text.length();
@@ -116,7 +121,12 @@ public class ShadowTextView extends ShadowView {
 
     private void sendAfterTextChanged() {
         for (TextWatcher watcher : watchers) {
-            watcher.afterTextChanged(new SpannableStringBuilder(getText()));
+          CharSequence s = getText();
+          if (s instanceof Editable) {
+            watcher.afterTextChanged((Editable) s);
+          } else {
+            watcher.afterTextChanged(new SpannableStringBuilder(s));
+          }
         }
     }
 
@@ -346,12 +356,12 @@ public class ShadowTextView extends ShadowView {
     public String innerText() {
         return (text == null || getVisibility() != VISIBLE) ? "" : text.toString();
     }
-    
+
     @Implementation
     public void setError(CharSequence error) {
       errorText = error;
     }
-    
+
     @Implementation
     public CharSequence getError() {
       return errorText;

@@ -180,6 +180,17 @@ public class TextViewTest {
     }
 
     @Test
+    public void givenATextViewWithATextWatcherAdded_WhenSettingTextWithEditable_ShouldNotifyTextWatcher() {
+        MockTextWatcher mockTextWatcher = new MockTextWatcher();
+        textView.addTextChangedListener(mockTextWatcher);
+
+        textView.setText(new SpannableStringBuilder("text"));
+
+        assertEachTextWatcherEventWasInvoked(mockTextWatcher);
+    }
+
+
+    @Test
     public void givenATextViewWithATextWatcherAdded_WhenSettingNullText_ShouldNotifyTextWatcher() {
         MockTextWatcher mockTextWatcher = new MockTextWatcher();
         textView.addTextChangedListener(mockTextWatcher);
@@ -236,11 +247,30 @@ public class TextViewTest {
     }
 
     @Test
+    public void whenSettingTextWithEditable_ShouldFireAfterTextChangedWithCorrectArgument() {
+        MockTextWatcher mockTextWatcher = new MockTextWatcher();
+        textView.addTextChangedListener(mockTextWatcher);
+
+        textView.setText(new SpannableStringBuilder(NEW_TEXT));
+
+        assertThat(mockTextWatcher.afterTextChangeArgument.toString(), equalTo(NEW_TEXT));
+    }
+
+    @Test
     public void whenAppendingText_ShouldAppendNewTextAfterOldOne() {
         textView.setText(INITIAL_TEXT);
         textView.append(NEW_TEXT);
 
         assertEquals(INITIAL_TEXT + NEW_TEXT, textView.getText());
+    }
+
+    @Test
+    public void whenAppendingTextWithEditable_ShouldAppendNewTextAfterOldOne() {
+        textView.setText(new SpannableStringBuilder(INITIAL_TEXT));
+        textView.append(NEW_TEXT);
+
+        assertEquals(INITIAL_TEXT + NEW_TEXT, textView.getText().toString());
+        assertTrue(textView.getText() instanceof SpannableStringBuilder);
     }
 
     @Test

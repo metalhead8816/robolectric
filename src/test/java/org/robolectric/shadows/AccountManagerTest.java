@@ -2,7 +2,10 @@ package org.robolectric.shadows;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorDescription;
 import android.accounts.AuthenticatorException;
+import android.accounts.OnAccountsUpdateListener;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.Application;
@@ -16,32 +19,30 @@ import java.io.IOException;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.fail;
-import static org.junit.Assert.assertSame;
 
 @RunWith(TestRunners.WithDefaults.class)
 public class AccountManagerTest {
   Application app;
+  AccountManager am;
 
   @Before
   public void setUp() throws Exception {
     app = Robolectric.application;
+    am = AccountManager.get(app);
   }
 
   @Test
   public void testGet() {
-    AccountManager appAM = AccountManager.get(app);
-    assertThat(appAM).isNotNull();
-    assertThat(appAM).isSameAs(AccountManager.get(app));
+    assertThat(am).isNotNull();
+    assertThat(am).isSameAs(AccountManager.get(app));
 
-    Activity a = new Activity();
-    AccountManager activityAM = AccountManager.get(a);
+    AccountManager activityAM = AccountManager.get(new Activity());
     assertThat(activityAM).isNotNull();
-    assertThat(activityAM).isSameAs(appAM);
+    assertThat(activityAM).isSameAs(am);
   }
 
   @Test
   public void testGetAccounts() {
-    AccountManager am = AccountManager.get(app);
     assertThat(am.getAccounts()).isNotNull();
     assertThat(am.getAccounts().length).isEqualTo(0);
 
@@ -60,7 +61,6 @@ public class AccountManagerTest {
 
   @Test
   public void testGetAccountsByType() {
-    AccountManager am = AccountManager.get(app);
     assertThat(am.getAccountsByType("name_a")).isNotNull();
     assertThat(am.getAccounts().length).isEqualTo(0);
 
@@ -89,7 +89,6 @@ public class AccountManagerTest {
 
   @Test
   public void addAuthToken() {
-    AccountManager am = AccountManager.get(app);
     Account account = new Account("name", "type");
     Robolectric.shadowOf(am).addAccount(account);
 
@@ -102,16 +101,13 @@ public class AccountManagerTest {
 
   @Test
   public void setAuthToken_shouldNotAddTokenIfAccountNotPresent() {
-    AccountManager am = AccountManager.get(app);
     Account account = new Account("name", "type");
     am.setAuthToken(account, "token_type_1", "token1");
-
     assertThat(am.peekAuthToken(account, "token_type_1")).isNull();
   }
 
   @Test
   public void testAddAccountExplicitly() {
-    AccountManager am = AccountManager.get(app);
     Account account = new Account("name", "type");
     boolean accountAdded = am.addAccountExplicitly(account, null, null);
 
@@ -139,7 +135,6 @@ public class AccountManagerTest {
 
   @Test
   public void testBlockingGetAuthToken() throws AuthenticatorException, OperationCanceledException, IOException {
-    AccountManager am = AccountManager.get(app);
     Account account = new Account("name", "type");
     Robolectric.shadowOf(am).addAccount(account);
 
@@ -153,16 +148,101 @@ public class AccountManagerTest {
       am.blockingGetAuthToken(null, "token_type_1", false);
       fail("blockingGetAuthToken() should throw an illegal argument exception if the account is null");
     } catch (IllegalArgumentException iae) {
-      // NOP
+      // Expected
     }
     try {
       am.blockingGetAuthToken(account, null, false);
       fail("blockingGetAuthToken() should throw an illegal argument exception if the auth token type is null");
     } catch (IllegalArgumentException iae) {
-      // NOP
+      // Expected
     }
 
     Account account1 = new Account("unknown", "type");
     assertThat(am.blockingGetAuthToken(account1, "token_type_1", false)).isNull();
+  }
+
+  @Test
+  public void removeAccount_throwsIllegalArgumentException_whenPassedNullAccount() {
+    Account account = new Account("name", "type");
+    Robolectric.shadowOf(am).addAccount(account);
+
+    try {
+      am.removeAccount(null, null, null);
+      fail("removeAccount() should throw an illegal argument exception if the account is null");
+    } catch (IllegalArgumentException iae) {
+      // Expected
+    }
+  }
+
+  @Test
+  public void removeAccount_doesNotRemoveAccountOfDifferentName() throws Exception {
+    Account account = new Account("name", "type");
+    Robolectric.shadowOf(am).addAccount(account);
+
+    Account wrongAccount = new Account("wrong_name", "type");
+    AccountManagerFuture<Boolean> future = am.removeAccount(wrongAccount, null, null);
+    assertThat(future.getResult()).isFalse();
+    assertThat(am.getAccountsByType("type")).isNotEmpty();
+  }
+
+  @Test
+  public void removeAccount_does() throws Exception {
+    Account account = new Account("name", "type");
+    Robolectric.shadowOf(am).addAccount(account);
+
+    AccountManagerFuture<Boolean> future = am.removeAccount(account, null, null);
+    assertThat(future.getResult()).isTrue();
+    assertThat(am.getAccountsByType("type")).isEmpty();
+  }
+
+  private static class TestOnAccountsUpdateListener implements OnAccountsUpdateListener {
+    private int invocationCount = 0;
+
+    @Override
+    public void onAccountsUpdated(Account[] accounts) {
+      invocationCount++;
+    }
+
+    public int getInvocationCount() {
+      return invocationCount;
+    }
+  }
+
+  @Test
+  public void testAccountsUpdateListener() {
+    TestOnAccountsUpdateListener listener = new TestOnAccountsUpdateListener();
+    am.addOnAccountsUpdatedListener(listener, null, false);
+    assertThat(listener.getInvocationCount()).isEqualTo(0);
+
+    Account account = new Account("name", "type");
+    Robolectric.shadowOf(am).addAccount(account);
+    assertThat(listener.getInvocationCount()).isEqualTo(1);
+  }
+
+  @Test
+  public void testAccountsUpdateListener_duplicate() {
+    TestOnAccountsUpdateListener listener = new TestOnAccountsUpdateListener();
+    am.addOnAccountsUpdatedListener(listener, null, false);
+    am.addOnAccountsUpdatedListener(listener, null, false);
+    assertThat(listener.getInvocationCount()).isEqualTo(0);
+
+    Account account = new Account("name", "type");
+    Robolectric.shadowOf(am).addAccount(account);
+    assertThat(listener.getInvocationCount()).isEqualTo(1);
+  }
+
+  @Test
+  public void testAccountsUpdateListener_updateImmediately() {
+    TestOnAccountsUpdateListener listener = new TestOnAccountsUpdateListener();
+    am.addOnAccountsUpdatedListener(listener, null, true);
+    assertThat(listener.getInvocationCount()).isEqualTo(1);
+  }
+
+  @Test
+  public void testAddAuthenticator() {
+    Robolectric.shadowOf(am).addAuthenticator("type");
+    AuthenticatorDescription[] result = am.getAuthenticatorTypes();
+    assertThat(result.length).isEqualTo(1);
+    assertThat(result[0].type).isEqualTo("type");
   }
 }

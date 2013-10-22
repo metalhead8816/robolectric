@@ -4,6 +4,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.annotation.Config;
+import org.robolectric.res.PackageResourceLoader;
+import org.robolectric.res.ResourceLoader;
+import org.robolectric.res.ResourcePath;
 import org.robolectric.shadows.ShadowView;
 import org.robolectric.shadows.ShadowViewGroup;
 
@@ -29,10 +32,10 @@ public class RobolectricTestRunnerTest {
 
   @Test public void whenClassDoesntHaveConfigAnnotation_getConfig_shouldUseMethodConfig() throws Exception {
     assertConfig(configFor(Test2.class, "withoutAnnotation"),
-        -1, "--default", "", -1, new Class[]{});
+        Config.DEFAULT_SDK_LEVEL, "--default", "", -1, new Class[]{});
 
     assertConfig(configFor(Test2.class, "withDefaultsAnnotation"),
-        -1, "--default", "", -1, new Class[]{});
+        Config.DEFAULT_SDK_LEVEL, "--default", "", -1, new Class[]{});
 
     assertConfig(configFor(Test2.class, "withOverrideAnnotation"),
         9, "furf", "from-method", 8, new Class[]{Test1.class});
@@ -53,6 +56,27 @@ public class RobolectricTestRunnerTest {
     Properties properties = properties("shadows:");
     assertConfig(configFor(Test2.class, "withoutAnnotation", properties),
         -1, "--default", "", -1, new Class[] {});
+  }
+
+  @Test public void rememberThatSomeTestRunnerMethodsShouldBeOverridable() throws Exception {
+    // super weak test for now, just remember not to make these methods static!
+
+    //noinspection UnusedDeclaration
+    class CustomTestRunner extends RobolectricTestRunner {
+      public CustomTestRunner(Class<?> testClass) throws InitializationError {
+        super(testClass);
+      }
+
+      @Override public PackageResourceLoader createResourceLoader(ResourcePath resourcePath) {
+        return super.createResourceLoader(resourcePath);
+      }
+
+      @Override
+      protected ResourceLoader createAppResourceLoader(ResourceLoader systemResourceLoader,
+          AndroidManifest appManifest) {
+        return super.createAppResourceLoader(systemResourceLoader, appManifest);
+      }
+    }
   }
 
   private Config configFor(Class<?> testClass, String methodName, final Properties configProperties) throws InitializationError {

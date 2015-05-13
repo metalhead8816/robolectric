@@ -4,11 +4,15 @@
 .settings
 eclipsebin
 
+# m2e-apt
+.factorypath
+
 # Ant
 bin/
 out/
 
 # Maven
+dist
 target
 pom.xml.*
 release.properties

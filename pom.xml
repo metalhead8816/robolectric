@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -10,274 +9,283 @@
   </parent>
 
   <groupId>org.robolectric</groupId>
-  <artifactId>robolectric</artifactId>
-  <version>2.3-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>Robolectric</name>
+  <artifactId>robolectric-parent</artifactId>
+  <version>3.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
   <description>An alternative Android testing framework.</description>
   <url>http://robolectric.org/</url>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit-dep</artifactId>
-      <version>4.8.2</version>
-      <scope>provided</scope>
-    </dependency>
+  <modules>
+    <module>robolectric</module>
+    <module>robolectric-annotations</module>
+    <module>robolectric-processor</module>
+    <module>robolectric-resources</module>
+    <module>robolectric-shadows</module>
+    <module>robolectric-utils</module>
+  </modules>
 
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis</artifactId>
-      <version>1.3</version>
-    </dependency>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <libsqlite.version>0.282-3</libsqlite.version>
+    <robolectric.api.level>21</robolectric.api.level>
+  </properties>
 
-    <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <version>3.7.2</version>
-    </dependency>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Robolectric Dependencies -->
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>robolectric</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>4.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>robolectric-annotations</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-commons</artifactId>
-      <version>4.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>robolectric-fakehttp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-util</artifactId>
-      <version>4.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>robolectric-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-analysis</artifactId>
-      <version>4.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>robolectric-resources</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>shadows-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.3</version>
-    </dependency>
+      <!-- Test Dependencies -->
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>2.0.0</version>
+        <scope>test</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.0.3</version>
-    </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>1.9.5</version>
+        <scope>test</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>com.ximpleware</groupId>
-      <artifactId>vtd-xml</artifactId>
-      <version>2.11</version>
-    </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>android-all</artifactId>
+        <version>5.0.0_r2-robolectric-0</version>
+        <scope>provided</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>org.robolectric</groupId>
-      <artifactId>android-all</artifactId>
-      <version>4.3_r2-robolectric-0</version>
-      <scope>provided</scope>
-    </dependency>
+      <!-- Project Dependencies -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.2</version>
+      </dependency>
 
-    <dependency>
-      <groupId>com.google.android.maps</groupId>
-      <artifactId>maps</artifactId>
-      <version>18_r3</version>
-      <scope>provided</scope>
-    </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>16.0.1</version>
+      </dependency>
 
-    <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>support-v4</artifactId>
-      <version>r7</version>
-    </dependency>
+      <dependency>
+        <groupId>com.intellij</groupId>
+        <artifactId>annotations</artifactId>
+        <version>12.0</version>
+        <scope>provided</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-util</artifactId>
-      <version>1.2.5</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-reflect</artifactId>
-      <version>1.4.1</version>
-      <exclusions>
-        <!-- To resolve conflicts between different transitive dependency to fest-util from from fest-assert-core and fest-reflect -->
-        <exclusion>
-          <groupId>org.easytesting</groupId>
-          <artifactId>fest-util</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert-core</artifactId>
-      <version>2.0M10</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.9.5</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.intellij</groupId>
-      <artifactId>annotations</artifactId>
-      <version>12.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-ant-tasks</artifactId>
-      <version>2.1.3</version>
-    </dependency>
-  </dependencies>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.0.3</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
-        <configuration/>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.13</version>
-        <configuration>
-          <excludes>
-            <exclude>**/Test*.java</exclude>
-          </excludes>
-          <argLine>-Xms768m -Xmx768m -XX:MaxPermSize=128m</argLine>
-        </configuration>
-      </plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.bsc.maven</groupId>
+          <artifactId>maven-processor-plugin</artifactId>
+          <version>2.2.4</version>
+        </plugin>
 
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- required for testing robolectric-sqlite -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3.2</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
+            <compilerArgument>-proc:none</compilerArgument>
+          </configuration>
+        </plugin>
 
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>2.4.1</version>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>tmp</directory>
-              <includes>
-                <include>*</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.13</version>
+          <configuration>
+            <includes>
+              <include>**/*Test.java</include>
+            </includes>
+            <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</argLine>
+            <runOrder>random</runOrder>
+            <systemProperties>
+              <java.awt.headless>true</java.awt.headless>
+            </systemProperties>
+          </configuration>
+        </plugin>
 
-    </plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.3.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.4.1</version>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>tmp</directory>
+                <includes>
+                  <include>*</include>
+                </includes>
+              </fileset>
+            </filesets>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.1</version>
+          <configuration>
+            <quiet>true</quiet>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <tagNameFormat>robolectric-@{project.version}</tagNameFormat>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <profiles>
     <profile>
-      <id>ant-deps</id>
+      <id>release</id>
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.6</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
             <executions>
               <execution>
-                <id>clean-dependencies</id>
-                <phase>package</phase>
+                <id>attach-sources</id>
                 <goals>
-                  <goal>run</goal>
+                  <goal>jar-no-fork</goal>
                 </goals>
-                <configuration>
-                  <target>
-                    <delete dir="${project.basedir}/lib/main"/>
-                    <mkdir dir="${project.basedir}/lib/main"/>
-                  </target>
-                </configuration>
               </execution>
             </executions>
           </plugin>
+
           <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
             <executions>
               <execution>
-                <id>copy-dependencies</id>
-                <phase>package</phase>
+                <id>attach-javadocs</id>
                 <goals>
-                  <goal>copy-dependencies</goal>
+                  <goal>jar</goal>
                 </goals>
-                <configuration>
-                  <outputDirectory>${project.basedir}/lib/main</outputDirectory>
-                  <overWriteReleases>false</overWriteReleases>
-                  <overWriteSnapshots>false</overWriteSnapshots>
-                  <overWriteIfNewer>true</overWriteIfNewer>
-                  <excludeArtifactIds>android,maps,mockito-core</excludeArtifactIds>
-                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>snapshot</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
@@ -293,8 +301,8 @@
   </scm>
 
   <ciManagement>
-    <system>Hudson</system>
-    <url>http://ci.robolectric.org/job/robolectric</url>
+    <system>Travis CI</system>
+    <url>http://travis-ci.org/robolectric/robolectric</url>
   </ciManagement>
 
   <developers>
@@ -309,6 +317,7 @@
       </roles>
       <timezone>PST/PDT</timezone>
     </developer>
+
     <developer>
       <id>tyler</id>
       <name>Tyler Schultz</name>
@@ -320,6 +329,7 @@
       </roles>
       <timezone>PST/PDT</timezone>
     </developer>
+
     <developer>
       <id>phil</id>
       <name>Phil Goodwin</name>
